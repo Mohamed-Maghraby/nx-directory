@@ -4,8 +4,7 @@
 
 A next.js directory blog web app for new startups
 
-![demo](./url)
-
+[Live Demo](http://https://6880194bee47d972f99f6a6f--willowy-brioche-b1660c.netlify.app/ "demo")
 ### Dependencies
 
 - TypeScript, react.js, next.js, Sanity, tailwindcss
