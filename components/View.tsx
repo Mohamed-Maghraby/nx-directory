@@ -4,6 +4,13 @@ import { STARTUPS_VIEWS_QUERY } from "@/sanity/lib/queries";
 import { writeClient } from "@/sanity/lib/write-client";
 import { unstable_after as after} from "next/server";
 
+/**
+ * Accepts an id from startup -> [id] ->  root page.
+ * Fetches views by startup id from db.
+ * Calls writeClient to update view in db.
+ * 
+ */
+
 async function View({ id }: { id: string }) {
   const { views: totalViews } = await client
     .withConfig({ useCdn: false })

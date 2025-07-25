@@ -1,5 +1,10 @@
 import { defineQuery } from "next-sanity";
 
+/**
+ * queries.ts is used to define the db queries used in fetching from sanity.
+ * Sanity uses special query langue called "GROQ"
+ */
+
 export const STARTUPS_QUERY = defineQuery(`
   *[
     _type == "startup" &&

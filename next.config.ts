@@ -1,3 +1,9 @@
+/**
+ * We use this file to configure next.js 
+ * ex: ignoreBuildErrors in typescript prop: prevent typescript errors when building the app
+ * ex: experimental:incremental -> this sets the rendering method of next to be ISR.
+ */
+
 import {withSentryConfig} from "@sentry/nextjs";
 import type { NextConfig } from "next";
 

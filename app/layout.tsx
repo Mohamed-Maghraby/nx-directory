@@ -4,6 +4,10 @@ import "./globals.css";
 import "easymde/dist/easymde.min.css";
 import { SanityLive } from "@/sanity/lib/live";
 
+/**
+ * The main layout of the app set's the fonts, extra configs.
+ * Same Rules of layout applies here (every layout and page is rendered here)
+ */
 const workSans = localFont({
   src: [
     {

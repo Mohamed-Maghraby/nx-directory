@@ -1,3 +1,8 @@
+/**
+ * Define a client to connect with db (sanity). Defines clients for only sever-component, we do this by using "server-only" external lib
+ * We should use this writeClient method in server components only cause it includes the token
+ */
+
 import "server-only"
 
 import { createClient } from 'next-sanity'

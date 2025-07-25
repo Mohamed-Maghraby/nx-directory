@@ -1,18 +1,30 @@
 import { auth } from "@/auth";
-import UserStartups, { StartupCardSkeleton } from "@/components/UserStartups";
 import { client } from "@/sanity/lib/client";
 import { AUTHOR_BY_ID_QUERY } from "@/sanity/lib/queries";
+
+/* Components */
+import UserStartups, { StartupCardSkeleton } from "@/components/UserStartups";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+
 export const experimental_ppr = true;
 
+/**
+ * root page of user -> [id].
+ * Displays user info.
+ * Uses PPR technique.
+ * First loads the shell static content.
+ * Then loads the User Startups list upon user request to this page (dynamically).
+ * UserStartups used in the <Suspense/> with a Skeleton fallback from shadcn. 
+ * Suspense marks UserStartups as a dynamic part.
+ */
 async function page({ params }: { params: Promise<{ id: string }> }) {
   const id = (await params).id;
   const session = await auth();
 
+  //fetch author's info from db
   const user = await client.fetch(AUTHOR_BY_ID_QUERY, { id });
-
 
   if (!user) return notFound();
 

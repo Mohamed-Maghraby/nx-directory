@@ -2,6 +2,7 @@
 
 /**
  * This configuration is used to for the Sanity Studio that’s mounted on the `\app\studio\[[...tool]]\page.tsx` route
+ * This file configure the admin dashboard for sanity to manage content ex: add users, authors, image, etc...
 */
 
 import {defineConfig} from 'sanity'

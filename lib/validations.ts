@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+/**
+ * Using "zod" lib to validate forms, i,e create a form schema,  input types and validate inputs 
+*/
+
 export const formSchema = z.object({
   title: z.string().min(3).max(100),
   description: z.string().min(20).max(500),

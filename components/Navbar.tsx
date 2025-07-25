@@ -4,6 +4,19 @@ import { auth, signOut, signIn } from "@/auth";
 import { BadgePlus, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+/**
+ * Navbar is a server component (default) which means it's markup will be created and send upon site request and will be cashed in browser
+ * as a static asset.
+ * Navbar component: call session from auth.ts we defined.
+ * Creates Navbar UI.
+ * Uses "Link" and "Image" next.js optimized components
+ * Handles Navbar logic: 
+ *  - If user exists we shoe create link, navigate the user
+ *  - Allow user to sign out using signOut from auth, signout uses form's action so "use server" directive is needed.
+ *  - Displays a user avatar and user link
+ *  - If no user, allow user to sing in with "signIn" from auth, using a form action 
+ */
+
 const Navbar = async () => {
   const session = await auth();
 

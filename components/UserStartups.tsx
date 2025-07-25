@@ -4,8 +4,11 @@ import StartupCard, { StartupCardType } from "./StartupCard";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "./ui/skeleton";
 
-
-async function UserStartups({ id }: { id: string }) {
+/**
+ * Fetches startups by user id.
+ * Displays the startups to thi specific suer in <StartupCard/> if there is startups
+ */
+export default async function UserStartups({ id }: { id: string }) {
   const startups = await client.fetch(STARTUPS_BY_AUTHOR_QUERY, { id });
   console.log(startups);
   return (
@@ -20,8 +23,11 @@ async function UserStartups({ id }: { id: string }) {
     </>
   );
 }
-export default UserStartups;
 
+/**
+ * A skeleton wrapper typically creates hard-coded array an loops on in to render the skeleton n times to give user the illusion
+ * that component is rendering
+ */
 export const StartupCardSkeleton = () => (
   <>
     {[0, 1, 2, 3, 4].map((i: number) => {

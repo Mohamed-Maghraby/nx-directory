@@ -1,16 +1,24 @@
 "use client";
 
-import React, { useState, useActionState, useEffect } from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import MDEditor from "@uiw/react-md-editor";
-import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
+import React, { useState, useActionState } from "react";
 import { formSchema } from "@/lib/validations";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { createPitch } from "@/lib/actions";
+
+/* components */
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import MDEditor from "@uiw/react-md-editor";
+import { Button } from "@/components/ui/button";
+import { Send } from "lucide-react";
+
+/**
+ * StartupForm rendered from create router -> page.
+ * It's a client component (handles user interactions).
+ * Defines a: errors object with type string of keys and values, a pitch, tost from shadcn, calls useRouter hook to use navigation in client 
+ */
 
 const StartupForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -18,8 +26,12 @@ const StartupForm = () => {
   const { toast } = useToast();
   const router = useRouter();
 
+  //call this function onSubmit.
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
+
     try {
+
+      //creates an object with the form values
       const formValues = {
         title: formData.get("title") as string,
         description: formData.get("description") as string,
@@ -28,10 +40,13 @@ const StartupForm = () => {
         pitch,
       };
 
+      //validates form's types and input rules, this process is Asynchronous so we use parseAsync from "zod" to parse this object 
       await formSchema.parseAsync(formValues);
 
+      //calls createPitch defined in actions ("use server" directive is defined in top of action file so we don't need to use it here).
       const result = await createPitch(prevState, formData, pitch);
 
+      //if result is "SUCCESS" render a tost with success. Then redirect to the new startup created (result returns the id of new created post)
       if (result.status == "SUCCESS") {
         toast({
           title: "Success",
@@ -43,11 +58,15 @@ const StartupForm = () => {
 
       return result;
     } catch (error) {
+
+      //renders a zod type error, shorten them to just fields error's
       if (error instanceof z.ZodError) {
         const fieldErorrs = error.flatten().fieldErrors;
 
+        //set error object state
         setErrors(fieldErorrs as unknown as Record<string, string>);
 
+        //tost an error
         toast({
           title: "Error",
           description: "Please check your inputs and try again",
@@ -57,6 +76,7 @@ const StartupForm = () => {
         return { ...prevState, error: "Validation failed", status: "ERROR" };
       }
 
+      //runs if not a fetch error
       toast({
         title: "Error",
         description: "An unexpected error has occurred",
@@ -71,6 +91,7 @@ const StartupForm = () => {
     }
   };
 
+  //use useActionState hooks to be able to dispatch an action providing form's action handler and returns the formAction and pending state
   const [state, formAction, isPending] = useActionState(handleFormSubmit, {
     error: "",
     status: "INITIAL",

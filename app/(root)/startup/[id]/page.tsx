@@ -1,20 +1,48 @@
 import { Suspense } from "react";
 import { formatDate } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
+import markdownit from "markdown-it";
 import {
   PLAYLIST_BY_SLUG_QUERY,
   STARTUPS_BY_ID_QUERY,
 } from "@/sanity/lib/queries";
+
+/* Components */
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import markdownit from "markdown-it";
-
 import View from "@/components/View";
 import StartupCard, { StartupCardType } from "@/components/StartupCard";
 
+//Activate prerendering
 export const experimental_ppr = true;
+
+//markdown instance
 const md = markdownit();
+
+/**
+ * Startup page by id, this page catches a dynamic id by using [id] dynamic-segment.
+ * It should catch the id as a param and display a startup page.
+ * It parallel fetching both posts and playlist (a techniques used by next)
+ * Displays author info and post details + render the post in markdown format.
+ * Displays a playlist (editorPosts) if there is any.
+ * Uses a React Subsense to dynamically displays post views and update it every time a visitor views the post.
+ * 
+ * Techniques used in this component: 
+ * 1-PPR (Partial Prerendering) a strategy allows combining static and dynamic content at the same route.
+ *  -Server sends a shell containing the static content.
+ * -The shell leaves holes for the dynamic content that will load in asynchronously.
+ * -The dynamic holes are streamed (fetched) in parallel.
+ * -Include experimental_ppr = true to activate it, note: (this technique is yet experimental)
+ * -Dynamic content needs to be marked with a "Suspense", with a fallback (usually a skelton or normal jsx).
+ * -Using Suspense creates a "Dynamic Boundary" inside a static boundary, this tells next load the static first, suspend the dynamic and 
+ * use a fallback until static is or user requests the dynamic content.
+ * 
+ * 2-Parallel Fetching.
+ * -Using Promise.all we can fetch multiple data at same time from db only if responses don't depend on each other.
+ * -In this example the post and playlist are Parallel fetched 
+ * 
+ */
 
 async function page({ params }: { params: Promise<{ id: string }> }) {
   const id = (await params).id;

@@ -1,5 +1,10 @@
 import type {Config} from "tailwindcss";
-
+/**
+ * Use this file to configure them for tailwind, ex color-> primary: we can set a global primary color and use it in tailwind classes
+ * as well as fontFamily and other theming options.
+ * Note: in tailwind v4, theming options is configured through the css file
+ * at the plugin property blow we can define external plugins like tailwind animate
+*/
 const config: Config = {
     darkMode: ["class"],
     content: [
