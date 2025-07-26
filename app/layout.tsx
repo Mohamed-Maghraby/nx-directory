@@ -60,8 +60,8 @@ const workSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "nx Directory",
-  description: "Pitch, Vote and Grow",
+  title: "NX Directory",
+  description: "New Startup Radar",
 };
 
 export default function RootLayout({
